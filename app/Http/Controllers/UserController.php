@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-    const TOKEN_NAME = 'personal';
+
     private userServices $userServices;
 
     public function __construct(userServices $userServices)
@@ -16,30 +16,31 @@ class UserController extends Controller
         $this->userServices =  $userServices;
     }
 
+
     public function signup(Request $request)
     {
-        $user = $this->userServices->signup($request);
-        $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
-        return response()->json(
-            [
-                'user' => $user,
-                'token' => $token,
-            ],
-        );
+        return response()->json($this->userServices->signup($request));
+
     }
 
-        public function login(Request $request)
+    public function login(Request $request)
     {
-        $user = $this->userServices->login($request);
-        $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
-        
-        return response()->json(
-            [
-                'user' => $user,
-                'token'=>$token
-            ],
-        );
+        return response()->json($this->userServices->login($request));
+
     }
 
-    
+    public function all()
+    {
+        return $this->userServices->all();
+    }
+
+    public function update(Request $request , $id)
+    {
+        return $this->userServices->update($id,$request->toArray());
+    }
+
+    public function delete($id)
+    {
+        return $this->userServices->delete($id);
+    }
 }

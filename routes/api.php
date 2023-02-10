@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Route::middleware('auth:sanctum')->group( function(){
 
 Route::post('customers' , [CustomerController::class , 'create']);
@@ -44,9 +45,14 @@ Route::patch('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController:
 Route::delete('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'delete']);
 Route::get('customers/{customerId}/invoices' , [InvoiceController::class , 'index']);
 
+//----------- user Route --------------------------
+
+Route::get('users', [UserController::class, 'all']);
+Route::patch('users/{id}', [UserController::class, 'update']);
+Route::delete('users/{id}', [UserController::class, 'delete']);
+
 
 });
 
 Route::post('signup' , [UserController::class , 'signup']);
-
 Route::post('login' , [UserController::class , 'login']);

@@ -18,9 +18,9 @@ class CustomerController extends Controller
   }
 
 
-  public function index(Request $request)
+  public function index()
   {
-    return $this->customerServices->index($request);
+    return $this->customerServices->index();
   }
 
   public function create(CreateCustomer $request)

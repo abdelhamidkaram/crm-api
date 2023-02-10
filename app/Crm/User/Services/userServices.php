@@ -1,45 +1,54 @@
-<?php 
+<?php
+
 namespace Crm\User\Services;
 
-use App\Crm\events\welcome;
+
 use Crm\User\Models\User;
+use Crm\User\Repository\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class userServices
 {
-    public function signup (Request $request): ?User
+    private UserRepository $userRepository;
+    const TOKEN_NAME = 'personal';
+
+    public function __construct(UserRepository $userRepository)
     {
-    $user =  User::create(
-        [
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-        ]
-        );
-
-        event(new welcome($user));
-
-        return $user;
+        $this->userRepository = $userRepository;
     }
-    
-    public function login (Request $request): ?User
+    public function signup(Request $request): ?array
     {
+        $user = $this->userRepository->signup($request);
+        $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
+        return [
+            'user' => $user,
+            'token' => $token,
+        ];
+    }
 
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-         ]);
-         $user = User::where('email', $request->email)->first();
- 
-         if (! $user || ! Hash::check($request->password, $user->password)) {
-             throw ValidationException::withMessages([
-                 'email' => ['The provided credentials are incorrect.'],
-             ]);
-         }
-      
-         return $user;
-    
+    public function login(Request $request) : ?array
+    {
+        $user = $this->userRepository->login($request);
+        $user->tokens()->delete();
+        $token = $user->createToken(self::TOKEN_NAME)->plainTextToken;
+        $data = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return $data;
+    }
+
+    public function all()
+    {
+        return $this->userRepository->all();
+    }
+    public function update($id, array $date)
+    {
+       return $this->userRepository->update($date , $id);
+    }
+
+    public function delete($id)
+    {
+        return $this->userRepository->delete($id);
     }
 }
