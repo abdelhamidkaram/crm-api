@@ -26,7 +26,7 @@ class userServices
         ];
     }
 
-    public function login(Request $request) : ?array
+    public function login(Request $request): ?array
     {
         $user = $this->userRepository->login($request);
         $user->tokens()->delete();
@@ -42,14 +42,16 @@ class userServices
     {
         return $this->userRepository->all();
     }
+    public function show($id)
+    {
+        return $this->userRepository->show($id);
+    }
     public function update($id, array $date)
     {
-       return $this->userRepository->update($date , $id);
+        return $this->userRepository->update($date, $id);
     }
     public function delete($id)
     {
         return $this->userRepository->delete($id);
     }
-
-    
 }

@@ -33,6 +33,10 @@ class UserController extends Controller
     {
         return $this->userServices->all();
     }
+    public function show($id)
+    {
+        return $this->userServices->show($id);
+    }
 
     public function update(Request $request , $id)
     {
