@@ -25,6 +25,7 @@ class CustomerController extends Controller
 
   public function create(CreateCustomer $request)
   {
+    app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     return $this->customerServices->create($request);
   }
 

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group( function(){
 
-Route::post('customers' , [CustomerController::class , 'create']);
+Route::post('customers' , [CustomerController::class , 'create'])->middleware("permission:createCustomer");
 Route::delete('customers/{id}' , [CustomerController::class , 'delete']);
 Route::patch('customers/{id}' , [CustomerController::class , 'update']);
 Route::get('customers/{id}' , [CustomerController::class , 'show']);
