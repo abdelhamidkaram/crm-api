@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,35 +23,45 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group( function(){
 
-Route::post('customers' , [CustomerController::class , 'create'])->middleware("permission:createCustomer");
-Route::delete('customers/{id}' , [CustomerController::class , 'delete'])->middleware("permission:deleteCustomer");
-Route::patch('customers/{id}' , [CustomerController::class , 'update'])->middleware("permission:updateCustomer");
-Route::get('customers/{id}' , [CustomerController::class , 'show'])->middleware("permission:showCustomer");
-Route::get('customers' , [CustomerController::class , 'index'])->middleware("permission:showCustomer");
+Route::post('customers' , [CustomerController::class , 'create'])->middleware("permission:Create Customer");
+Route::delete('customers/{id}' , [CustomerController::class , 'delete'])->middleware("permission:Delete Customer");
+Route::patch('customers/{id}' , [CustomerController::class , 'update'])->middleware("permission:Update Customer");
+Route::get('customers/{id}' , [CustomerController::class , 'show'])->middleware("permission:Show Customer");
+Route::get('customers' , [CustomerController::class , 'index'])->middleware("permission:Show Customer");
 
 //----------- Notes Route --------------------------
 
-Route::get('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'show'])->middleware('permission:showNote');
-Route::post('customers/{customerId}/notes' , [NoteController::class , 'create'])->middleware('permission:createNote');
-Route::patch('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'update'])->middleware('permission:updateNote');
-Route::delete('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'delete'])->middleware('permission:deleteNote');
-Route::get('customers/{customerId}/notes' , [NoteController::class , 'index'])->middleware('permission:showNote');
+Route::get('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'show'])->middleware('permission:Show Note');
+Route::post('customers/{customerId}/notes' , [NoteController::class , 'create'])->middleware('permission:Create Note');
+Route::patch('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'update'])->middleware('permission:Update Note');
+Route::delete('customers/{customerId}/notes/{noteId}' , [NoteController::class , 'delete'])->middleware('permission:Delete Note');
+Route::get('customers/{customerId}/notes' , [NoteController::class , 'index'])->middleware('permission:Show Note');
 
 
 //----------- Invoices Route --------------------------
 
-Route::get('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'show'])->middleware('permission:showInvoice');
-Route::post('customers/{customerId}/invoices' , [InvoiceController::class , 'create'])->middleware('permission:createInvoice');
-Route::patch('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'update'])->middleware('permission:updateInvoice');
-Route::delete('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'delete'])->middleware('permission:deleteInvoice');
-Route::get('customers/{customerId}/invoices' , [InvoiceController::class , 'index'])->middleware('permission:showInvoice');
+Route::get('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'show'])->middleware('permission:Show Invoice');
+Route::post('customers/{customerId}/invoices' , [InvoiceController::class , 'create'])->middleware('permission:Create Invoice');
+Route::patch('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'update'])->middleware('permission:Update Invoice');
+Route::delete('customers/{customerId}/invoices/{invoiceId}' , [InvoiceController::class , 'delete'])->middleware('permission:Delete Invoice');
+Route::get('customers/{customerId}/invoices' , [InvoiceController::class , 'index'])->middleware('permission:Show Invoice');
 
 //----------- user Route --------------------------
 
-Route::get('users', [UserController::class, 'all'])->middleware('permission:showUser');
-Route::get('users/{id}', [UserController::class, 'show'])->middleware('permission:showUser');
-Route::patch('users/{id}', [UserController::class, 'update'])->middleware('permission:updateUser');
-Route::delete('users/{id}', [UserController::class, 'delete'])->middleware('permission:deleteUser');
+Route::get('users', [UserController::class, 'all'])->middleware('permission:Show User');
+Route::get('users/{id}', [UserController::class, 'show'])->middleware('permission:Show User');
+Route::patch('users/{id}', [UserController::class, 'update'])->middleware('permission:Update User');
+Route::delete('users/{id}', [UserController::class, 'delete'])->middleware('permission:Delete User');
+
+//----------- Roles Route  --------------------------
+Route::post('roles',[RoleController::class, 'create'])->middleware('role:Super Admin');
+Route::get('roles', [RoleController::class, 'all'])->middleware('role:Super Admin');
+Route::get('roles/{id}', [RoleController::class, 'show'])->middleware('role:Super Admin');
+Route::patch('roles/{id}', [RoleController::class, 'update'])->middleware('role:Super Admin');
+Route::delete('roles/{id}', [RoleController::class, 'delete'])->middleware('role:Super Admin');
+Route::post('roles/{id}/addPermission', [RoleController::class, 'addPermission'])->middleware('role:Super Admin');
+Route::post('roles/{id}/{userId}', [RoleController::class, 'addRoleToUser'])->middleware('role:Super Admin');
+Route::delete('roles/{id}/{permissionId}', [RoleController::class, 'deletePermissionFormRol'])->middleware('role:Super Admin');
 
 
 });

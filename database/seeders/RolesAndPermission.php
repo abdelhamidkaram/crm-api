@@ -18,39 +18,39 @@ class RolesAndPermission extends Seeder
      */
 
     public $permissions = [
-        'createCustomer',
-        'updateCustomer',
-        'deleteCustomer',
-        'showCustomer',
-        'createNote',
-        'updateNote',
-        'deleteNote',
-        'showNote',
-        'createInvoice',
-        'updateInvoice',
-        'deleteInvoice',
-        'showInvoice',
-        'createUser',
-        'updateUser',
-        'deleteUser',
-        'showUser',
+        'Create Customer',
+        'Update Customer',
+        'Delete Customer',
+        'Show Customer',
+        'Create Note',
+        'Update Note',
+        'Delete Note',
+        'Show Note',
+        'Create Invoice',
+        'Update Invoice',
+        'Delete Invoice',
+        'Show Invoice',
+        'Create User',
+        'Update User',
+        'Delete User',
+        'Show User',
 
     ];
     public function run()
     {
 
-        foreach ($this->permissions as $permission) {
+        foreach ($this->permissions as $permission ) {
             Permission::create(['name' => $permission]);
         }
 
-        Role::create(['name' => 'superAdmin'])->syncPermissions($this->permissions);
+        Role::create(['name' => 'Super Admin'])->syncPermissions($this->permissions);
 
         User::create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
             'password'=>Hash::make('12345678')
-        ])->assignRole('superAdmin');
+        ])->assignRole('Super Admin');
 
-        
+
     }
 }
