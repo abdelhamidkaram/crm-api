@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -62,7 +63,9 @@ Route::delete('roles/{id}', [RoleController::class, 'delete'])->middleware('role
 Route::post('roles/{id}/addPermission', [RoleController::class, 'addPermission'])->middleware('role:Super Admin');
 Route::post('roles/{id}/{userId}', [RoleController::class, 'addRoleToUser'])->middleware('role:Super Admin');
 Route::delete('roles/{id}/{permissionId}', [RoleController::class, 'deletePermissionFormRol'])->middleware('role:Super Admin');
-
+//----------- Roles Route  --------------------------
+Route::get('permissions' , [PermissionController::class , 'all'])->middleware('role:Super Admin');
+Route::get('permissions/{id}' , [PermissionController::class , 'show'])->middleware('role:Super Admin');
 
 });
 
